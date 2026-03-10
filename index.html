@@ -1,97 +1,1472 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Pedro Antolinez | Cybersecurity & SOC Analyst</title>
-    <meta name="description" content="Portafolio profesional de Pedro Antolinez. Especialista en Ciberseguridad y Analista SOC.">
-    <meta property="og:title" content="Pedro Antolinez | Cybersecurity Specialist">
-    <meta property="og:description" content="Especialista en Ciberseguridad con certificaciones de Google, IBM, Cisco y Fortinet.">
-    <meta property="og:type" content="website">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedro Antolinez | Cybersecurity &amp; SOC Analyst</title>
+  <meta name="description" content="Portafolio profesional de Pedro Antolinez. Especialista en Ciberseguridad y Analista SOC con certificaciones de Google, IBM, Cisco y Fortinet." />
+  <meta property="og:title" content="Pedro Antolinez | Cybersecurity Specialist" />
+  <meta property="og:description" content="Especialista en Ciberseguridad con certificaciones de Google, IBM, Cisco y Fortinet." />
+  <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/eb496ab1a0.js" crossorigin="anonymous"></script>
+  <!-- Google Fonts: Space Grotesk + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    /* ==========================================
+       DESIGN TOKENS & RESET
+    ========================================== */
+    :root {
+      --bg:         #050a0f;
+      --bg2:        #080f18;
+      --card:       #0b1622;
+      --border:     #152030;
+      --accent:     #00e5ff;
+      --accent2:    #0077ff;
+      --text:       #c8d8e8;
+      --text-dim:   #5a7080;
+      --heading:    #e8f4ff;
+      --font-main:  'Space Grotesk', sans-serif;
+      --font-mono:  'JetBrains Mono', monospace;
+      --ease:       cubic-bezier(.25,.8,.25,1);
+      --radius:     12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==========================================
+       NAV
+    ========================================== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(5, 10, 15, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(1.5rem, 5vw, 6rem);
+      transition: background .3s var(--ease);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+    }
+
+    .logo {
+      font-family: var(--font-mono);
+      font-size: .95rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      color: var(--heading);
+    }
+
+    .logo span { color: var(--accent); }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: clamp(.8rem, 2vw, 2.4rem);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-dim);
+      font-size: .82rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .25s;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width .3s var(--ease);
+    }
+
+    nav a:hover { color: var(--accent); }
+    nav a:hover::after { width: 100%; }
+
+    /* Hamburger (mobile) */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: .5rem;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: .3s;
+    }
+
+    /* ==========================================
+       SECTION UTILITIES
+    ========================================== */
+    section { position: relative; padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 8vw, 8rem); }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .35em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--heading);
+      line-height: 1.15;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Scroll-reveal base */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+    .reveal-delay-5 { transition-delay: .5s; }
+    .reveal-delay-6 { transition-delay: .6s; }
+
+    /* ==========================================
+       HERO
+    ========================================== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding-left: clamp(1.5rem, 10vw, 10rem);
+      padding-right: clamp(1.5rem, 10vw, 10rem);
+      overflow: hidden;
+    }
+
+    /* Radial gradient mesh background */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -15%;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,255,.07) 0%, transparent 70%);
+      pointer-events: none;
+      animation: pulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); opacity: .7; }
+      to   { transform: scale(1.15); opacity: 1; }
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      letter-spacing: .4em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp .6s .3s var(--ease) forwards;
+    }
+
+    .hero-name {
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 700;
+      line-height: .95;
+      color: var(--heading);
+      letter-spacing: -.02em;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp .7s .5s var(--ease) forwards;
+    }
+
+    /* Glitch effect on name */
+    .hero-name .glitch {
+      position: relative;
+      display: inline-block;
+    }
+    .hero-name .glitch::before,
+    .hero-name .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      color: var(--heading);
+    }
+    .hero-name .glitch::before {
+      clip: rect(0, 900px, 0, 0);
+      animation: glitch1 4s infinite linear;
+      color: var(--accent);
+    }
+    .hero-name .glitch::after {
+      clip: rect(0, 900px, 0, 0);
+      animation: glitch2 4s infinite linear;
+      color: var(--accent2);
+    }
+
+    @keyframes glitch1 {
+      0%   { clip: rect(42px,9999px,44px,0); transform: skew(.3deg); }
+      5%   { clip: rect(12px,9999px,59px,0); transform: skew(.1deg); }
+      10%  { clip: rect(85px,9999px,20px,0); transform: skew(.5deg); }
+      15%  { clip: rect(5px,9999px,73px,0); }
+      20%  { clip: rect(0,0,0,0); }
+      100% { clip: rect(0,0,0,0); }
+    }
+    @keyframes glitch2 {
+      0%   { clip: rect(65px,9999px,10px,0); transform: skew(-.3deg); }
+      5%   { clip: rect(30px,9999px,90px,0); transform: skew(-.2deg); }
+      10%  { clip: rect(7px,9999px,30px,0); transform: skew(-.1deg); }
+      15%  { clip: rect(0,0,0,0); }
+      100% { clip: rect(0,0,0,0); }
+    }
+
+    .hero-typewriter {
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      font-weight: 400;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp .7s .7s var(--ease) forwards;
+    }
+
+    .hero-typewriter .tw-word {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      border-right: 2px solid var(--accent);
+      padding-right: 3px;
+      animation: blink .75s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .7s .9s var(--ease) forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .85rem 2rem;
+      background: var(--accent);
+      color: #050a0f;
+      font-weight: 700;
+      font-size: .85rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 28px rgba(0,229,255,.45);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .83rem 2rem;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: .85rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color .2s, color .2s, transform .2s var(--ease);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      opacity: 0;
+      animation: fadeUp .7s 1.2s var(--ease) forwards;
+    }
+
+    .hero-scroll span {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: .2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollLine 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      51%  { transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ==========================================
+       ABOUT
+    ========================================== */
+    #about { background: var(--bg2); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p { color: var(--text); line-height: 1.9; margin-bottom: 1.2rem; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: .5rem;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      transition: border-color .3s var(--ease), transform .3s var(--ease);
+    }
+    .stat-box:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .stat-number {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .78rem;
+      color: var(--text-dim);
+      letter-spacing: .06em;
+      margin-top: .5rem;
+      text-transform: uppercase;
+    }
+
+    .about-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: .9rem;
+    }
+
+    .info-row i {
+      color: var(--accent);
+      width: 18px;
+      flex-shrink: 0;
+    }
+
+    .info-row strong { color: var(--heading); }
+
+    /* ==========================================
+       SKILLS
+    ========================================== */
+    #skills { background: var(--bg); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .skill-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+      transition: border-color .3s var(--ease), transform .3s var(--ease);
+    }
+    .skill-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .skill-name {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      font-weight: 600;
+      color: var(--heading);
+      font-size: .9rem;
+    }
+
+    .skill-icon { color: var(--accent); width: 18px; text-align: center; }
+
+    .skill-percent {
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      color: var(--accent);
+    }
+
+    .skill-bar-wrap {
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .skill-bar {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      width: 0;
+      transition: width 1.2s var(--ease);
+    }
+
+    /* ==========================================
+       EXPERIENCE (Timeline)
+    ========================================== */
+    #experience { background: var(--bg2); }
+
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .tl-item {
+      position: relative;
+      padding-bottom: 3rem;
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem;
+      top: .3rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(0,229,255,.6);
+      transform: translateX(-4.5px);
+    }
+
+    .tl-date {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+
+    .tl-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: .2rem;
+    }
+
+    .tl-company {
+      font-size: .85rem;
+      color: var(--text-dim);
+      margin-bottom: .8rem;
+      font-weight: 500;
+    }
+
+    .tl-desc {
+      font-size: .88rem;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* ==========================================
+       EDUCATION & CERTIFICATIONS
+    ========================================== */
+    #education { background: var(--bg); }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.4rem;
+      margin-top: .5rem;
+    }
+
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+      transition: border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,229,255,.04) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .cert-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(0,229,255,.1);
+    }
+    .cert-card:hover::before { opacity: 1; }
+
+    .cert-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: rgba(0,229,255,.08);
+      border: 1px solid rgba(0,229,255,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-size: 1.4rem;
+      color: var(--accent);
+    }
+
+    .cert-name {
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--heading);
+      line-height: 1.4;
+    }
+
+    .cert-issuer {
+      font-size: .75rem;
+      color: var(--text-dim);
+      margin-top: .4rem;
+      font-family: var(--font-mono);
+      letter-spacing: .05em;
+    }
+
+    /* ==========================================
+       PROJECTS
+    ========================================== */
+    #projects { background: var(--bg2); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s var(--ease);
+    }
+
+    .project-card:hover {
+      border-color: rgba(0,229,255,.3);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0,0,0,.4);
+    }
+    .project-card:hover::after { transform: scaleX(1); }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .project-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(0,229,255,.08);
+      border: 1px solid rgba(0,229,255,.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    .project-links { display: flex; gap: .6rem; }
+
+    .project-link {
+      color: var(--text-dim);
+      font-size: 1rem;
+      transition: color .2s;
+      text-decoration: none;
+    }
+    .project-link:hover { color: var(--accent); }
+
+    .project-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+
+    .project-desc {
+      font-size: .88rem;
+      color: var(--text);
+      line-height: 1.8;
+      flex: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      padding: .2rem .7rem;
+      border-radius: 20px;
+      border: 1px solid rgba(0,229,255,.2);
+      color: var(--accent);
+      background: rgba(0,229,255,.05);
+      letter-spacing: .04em;
+    }
+
+    .btn-project {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: gap .2s var(--ease);
+    }
+    .btn-project:hover { gap: .9rem; }
+
+    /* ==========================================
+       LANGUAGES
+    ========================================== */
+    #languages { background: var(--bg); }
+
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .lang-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      transition: border-color .3s, transform .3s;
+    }
+    .lang-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+    .lang-flag {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .lang-info { flex: 1; }
+
+    .lang-name {
+      font-weight: 700;
+      color: var(--heading);
+      font-size: .95rem;
+      margin-bottom: .4rem;
+    }
+
+    .lang-level {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--text-dim);
+      letter-spacing: .08em;
+    }
+
+    .lang-dots {
+      display: flex;
+      gap: 4px;
+      margin-top: .5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background .3s;
+    }
+    .dot.filled { background: var(--accent); }
+
+    /* ==========================================
+       CONTACT
+    ========================================== */
+    #contact { background: var(--bg2); }
+
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-info p {
+      color: var(--text);
+      line-height: 1.9;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: .88rem;
+      transition: border-color .3s, color .3s, transform .3s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateX(6px); }
+    .contact-link i { color: var(--accent); width: 18px; }
+    .contact-link strong { color: var(--heading); display: block; font-size: .8rem; margin-bottom: .1rem; }
+
+    .contact-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .cta-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: .8rem;
+    }
+
+    .cta-text {
+      font-size: .88rem;
+      color: var(--text-dim);
+      margin-bottom: 1.8rem;
+      line-height: 1.7;
+    }
+
+    .social-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.2rem;
+    }
+
+    .social-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      font-size: 1rem;
+      text-decoration: none;
+      transition: border-color .2s, color .2s, transform .2s;
+    }
+    .social-icon:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); }
+
+    /* WhatsApp float */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #25d366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(37,211,102,.4);
+      z-index: 999;
+      transition: transform .3s var(--ease), box-shadow .3s;
+    }
+    .whatsapp-float:hover { transform: scale(1.12); box-shadow: 0 12px 30px rgba(37,211,102,.6); }
+
+    /* ==========================================
+       FOOTER
+    ========================================== */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 2rem clamp(1.5rem, 8vw, 8rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--heading);
+      font-size: .9rem;
+      letter-spacing: .1em;
+    }
+    .footer-logo span { color: var(--accent); }
+
+    footer p {
+      font-size: .78rem;
+      color: var(--text-dim);
+      letter-spacing: .05em;
+    }
+
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+    @media (max-width: 900px) {
+      .about-grid,
+      .contact-wrapper { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+
+    @media (max-width: 700px) {
+      nav ul { display: none; }
+      nav ul.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: rgba(5,10,15,.97);
+        backdrop-filter: blur(20px);
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--border);
+        gap: 1.2rem;
+        z-index: 999;
+      }
+      .menu-toggle { display: flex; }
+      #hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero-name { font-size: clamp(2.8rem, 12vw, 4.5rem); }
+    }
+
+    @media (max-width: 500px) {
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .certs-grid  { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">PEDRO<span>_SEC</span></div>
-            <ul>
-                <li><a href="#about">Perfil</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#certs">Certificaciones</a></li>
-                <li><a href="#projects">Proyectos</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <section id="hero">
-        <div class="hero-content">
-            <h1 class="glitch">Pedro Antolinez</h1>
-            <p>Especialista en <span id="typewriter" class="highlight"></span></p>
-            <div class="social-links">
-                <a href="https://www.linkedin.com/in/pedro-antolinez-itprofessional/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="https://github.com/pedroantolinezz-dev" target="_blank"><i class="fab fa-github"></i></a>
-            </div>
+  <!-- ==========================================
+       NAV
+  ========================================== -->
+  <header>
+    <nav>
+      <div class="logo">PEDRO<span>_SEC</span></div>
+      <ul id="nav-menu">
+        <li><a href="#about">Perfil</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experiencia</a></li>
+        <li><a href="#education">Certificaciones</a></li>
+        <li><a href="#projects">Proyectos</a></li>
+        <li><a href="#languages">Idiomas</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ==========================================
+       HERO
+  ========================================== -->
+  <section id="hero">
+    <p class="hero-eyebrow">// Especialista en Ciberseguridad</p>
+    <h1 class="hero-name">
+      <span class="glitch" data-text="Pedro">Pedro</span><br />
+      <span class="glitch" data-text="Antolinez">Antolinez</span>
+    </h1>
+    <p class="hero-typewriter">
+      Especialista en&nbsp;<span class="tw-word" id="typewriter"></span>
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">
+        <i class="fa-solid fa-terminal" aria-hidden="true"></i> Ver Proyectos
+      </a>
+      <a href="#contact" class="btn-outline">
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Contactar
+      </a>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       ABOUT
+  ========================================== -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label reveal">// 01 — Sobre mí</p>
+        <h2 class="section-title reveal reveal-delay-1">Defiendo lo que otros<br />no pueden ver.</h2>
+        <p class="reveal reveal-delay-2">
+          Soy Pedro Antolinez, especialista en ciberseguridad con formación en análisis SOC,
+          seguridad de redes y scripting de seguridad. Me apasiona proteger infraestructuras
+          digitales, detectar amenazas antes de que escalen y usar la inteligencia de datos
+          para fortalecer la postura defensiva de las organizaciones.
+        </p>
+        <p class="reveal reveal-delay-3">
+          Combino habilidades técnicas en Python, Linux, SIEM y análisis de logs con un enfoque
+          riguroso hacia el aprendizaje continuo. Mis certificaciones de Google, IBM, Cisco y
+          Fortinet respaldan un perfil preparado para operar en entornos SOC modernos.
+        </p>
+        <div class="about-stats">
+          <div class="stat-box reveal reveal-delay-4">
+            <div class="stat-number">6+</div>
+            <div class="stat-label">Certificaciones</div>
+          </div>
+          <div class="stat-box reveal reveal-delay-5">
+            <div class="stat-number">4</div>
+            <div class="stat-label">Organizaciones emisoras</div>
+          </div>
+          <div class="stat-box reveal reveal-delay-4">
+            <div class="stat-number">2+</div>
+            <div class="stat-label">Idiomas</div>
+          </div>
+          <div class="stat-box reveal reveal-delay-5">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Curiosidad técnica</div>
+          </div>
         </div>
-    </section>
-
-    <section id="skills" class="container">
-        <h2>Stack Tecnológico</h2>
-        <div class="skills-grid">
-            <div class="skill-tag">Python (Security Scripts)</div>
-            <div class="skill-tag">Linux / Bash Scripting</div>
-            <div class="skill-tag">SIEM & Log Analysis</div>
-            <div class="skill-tag">Network Security</div>
-            <div class="skill-tag">SQL & Data Analysis</div>
-            <div class="skill-tag">Prompt Engineering</div>
+      </div>
+      <div class="about-sidebar reveal reveal-delay-2">
+        <div class="info-row">
+          <i class="fa-solid fa-map-pin" aria-hidden="true"></i>
+          <div><strong>Ubicación</strong><br />Colombia</div>
         </div>
-    </section>
-
-    <section id="certs" class="container">
-        <h2>Certificaciones Profesionales</h2>
-        <div class="grid">
-            <div class="cert-card">
-                <i class="fab fa-google"></i>
-                <p>Google Cybersecurity Professional</p>
-            </div>
-            <div class="cert-card">
-                <i class="fas fa-shield-alt"></i>
-                <p>Fortinet Certified Fundamentals</p>
-            </div>
-            <div class="cert-card">
-                <i class="fab fa-ibm"></i>
-                <p>IBM Linux & Shell Scripting</p>
-            </div>
-            <div class="cert-card">
-                <i class="fab fa-google"></i>
-                <p>Google Data Analytics</p>
-            </div>
-            <div class="cert-card">
-                <i class="fas fa-network-wired"></i>
-                <p>Cisco: Introduction to Cybersecurity</p>
-            </div>
-            <div class="cert-card">
-                <i class="fas fa-robot"></i>
-                <p>IBM: Prompt Engineering Basics</p>
-            </div>
+        <div class="info-row">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          <div><strong>Rol</strong><br />Cybersecurity Analyst / SOC Analyst</div>
         </div>
-    </section>
-
-    <section id="projects" class="container">
-        <h2>Proyectos</h2>
-        <div class="project-card">
-            <h3>Analizador de Logs de Seguridad</h3>
-            <p>Herramienta en Python para detección de amenazas y patrones de ataque en logs.</p>
-            <a href="https://github.com/pedroantolinezz-dev/analizador-logs-seguridad" target="_blank" class="btn-git">Ver en GitHub <i class="fab fa-github"></i></a>
+        <div class="info-row">
+          <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+          <div>
+            <strong>LinkedIn</strong><br />
+            <a href="https://www.linkedin.com/in/pedro-antolinez-itprofessional/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">pedro-antolinez-itprofessional</a>
+          </div>
         </div>
-    </section>
+        <div class="info-row">
+          <i class="fa-brands fa-github" aria-hidden="true"></i>
+          <div>
+            <strong>GitHub</strong><br />
+            <a href="https://github.com/pedroantolinezz-dev" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">pedroantolinezz-dev</a>
+          </div>
+        </div>
+        <div class="info-row">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+          <div>
+            <strong>WhatsApp</strong><br />
+            <a href="https://wa.me/573026193661" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">+57 302 619 3661</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <a href="https://wa.me/573026193661" class="whatsapp-btn" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+  <!-- ==========================================
+       SKILLS
+  ========================================== -->
+  <section id="skills">
+    <p class="section-label reveal">// 02 — Stack tecnológico</p>
+    <h2 class="section-title reveal reveal-delay-1">Mis herramientas<br />de combate.</h2>
+    <div class="skills-grid">
+      <div class="skill-item reveal reveal-delay-1">
+        <div class="skill-header">
+          <div class="skill-name"><i class="fa-brands fa-python skill-icon" aria-hidden="true"></i> Python (Security Scripts)</div>
+          <span class="skill-percent">85%</span>
+        </div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="85"></div></div>
+      </div>
+      <div class="skill-item reveal reveal-delay-2">
+        <div class="skill-header">
+          <div class="skill-name"><i class="fa-brands fa-linux skill-icon" aria-hidden="true"></i> Linux / Bash Scripting</div>
+          <span class="skill-percent">80%</span>
+        </div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="80"></div></div>
+      </div>
+      <div class="skill-item reveal reveal-delay-3">
+        <div class="skill-header">
+          <div class="skill-name"><i class="fa-solid fa-chart-bar skill-icon" aria-hidden="true"></i> SIEM &amp; Log Analysis</div>
+          <span class="skill-percent">78%</span>
+        </div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="78"></div></div>
+      </div>
+      <div class="skill-item reveal reveal-delay-4">
+        <div class="skill-header">
+          <div class="skill-name"><i class="fa-solid fa-network-wired skill-icon" aria-hidden="true"></i> Network Security</div>
+          <span class="skill-percent">75%</span>
+        </div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="75"></div></div>
+      </div>
+      <div class="skill-item reveal reveal-delay-5">
+        <div class="skill-header">
+          <div class="skill-name"><i class="fa-solid fa-database skill-icon" aria-hidden="true"></i> SQL &amp; Data Analysis</div>
+          <span class="skill-percent">72%</span>
+        </div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="72"></div></div>
+      </div>
+      <div class="skill-item reveal reveal-delay-6">
+        <div class="skill-header">
+          <div class="skill-name"><i class="fa-solid fa-microchip skill-icon" aria-hidden="true"></i> Prompt Engineering</div>
+          <span class="skill-percent">80%</span>
+        </div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="80"></div></div>
+      </div>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
+  <!-- ==========================================
+       EXPERIENCE (Timeline)
+  ========================================== -->
+  <section id="experience">
+    <p class="section-label reveal">// 03 — Experiencia</p>
+    <h2 class="section-title reveal reveal-delay-1">Trayectoria<br />profesional.</h2>
+    <div class="timeline">
+      <div class="tl-item reveal reveal-delay-2">
+        <div class="tl-date">2024 — Presente</div>
+        <div class="tl-title">Cybersecurity Analyst (Formación y Proyectos)</div>
+        <div class="tl-company">Independiente — Colombia</div>
+        <div class="tl-desc">
+          Desarrollo de herramientas de seguridad en Python para detección de amenazas y análisis de logs.
+          Aplicación de conocimientos en SIEM, análisis forense de redes y scripting defensivo.
+          Obtención de certificaciones profesionales en Google, IBM, Cisco y Fortinet.
+        </div>
+      </div>
+      <div class="tl-item reveal reveal-delay-3">
+        <div class="tl-date">Formación continua</div>
+        <div class="tl-title">SOC Analyst Tier 1 (Entrenamiento)</div>
+        <div class="tl-company">Google · IBM · Cisco · Fortinet</div>
+        <div class="tl-desc">
+          Formación integral en operaciones de Centro de Operaciones de Seguridad (SOC):
+          triaje de alertas, gestión de incidentes, análisis de tráfico de red y respuesta ante
+          intrusiones. Práctica en entornos simulados de ciberseguridad.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       EDUCATION & CERTIFICATIONS
+  ========================================== -->
+  <section id="education">
+    <p class="section-label reveal">// 04 — Certificaciones</p>
+    <h2 class="section-title reveal reveal-delay-1">Respaldo<br />profesional.</h2>
+    <div class="certs-grid">
+      <div class="cert-card reveal reveal-delay-1">
+        <div class="cert-icon"><i class="fa-brands fa-google" aria-hidden="true"></i></div>
+        <div class="cert-name">Google Cybersecurity Professional</div>
+        <div class="cert-issuer">Google</div>
+      </div>
+      <div class="cert-card reveal reveal-delay-2">
+        <div class="cert-icon"><i class="fa-solid fa-shield-virus" aria-hidden="true"></i></div>
+        <div class="cert-name">Fortinet Certified Fundamentals</div>
+        <div class="cert-issuer">Fortinet</div>
+      </div>
+      <div class="cert-card reveal reveal-delay-3">
+        <div class="cert-icon"><i class="fa-brands fa-linux" aria-hidden="true"></i></div>
+        <div class="cert-name">IBM Linux &amp; Shell Scripting</div>
+        <div class="cert-issuer">IBM</div>
+      </div>
+      <div class="cert-card reveal reveal-delay-4">
+        <div class="cert-icon"><i class="fa-solid fa-chart-column" aria-hidden="true"></i></div>
+        <div class="cert-name">Google Data Analytics</div>
+        <div class="cert-issuer">Google</div>
+      </div>
+      <div class="cert-card reveal reveal-delay-5">
+        <div class="cert-icon"><i class="fa-solid fa-network-wired" aria-hidden="true"></i></div>
+        <div class="cert-name">Cisco: Introduction to Cybersecurity</div>
+        <div class="cert-issuer">Cisco</div>
+      </div>
+      <div class="cert-card reveal reveal-delay-6">
+        <div class="cert-icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
+        <div class="cert-name">IBM: Prompt Engineering Basics</div>
+        <div class="cert-issuer">IBM</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       PROJECTS
+  ========================================== -->
+  <section id="projects">
+    <p class="section-label reveal">// 05 — Proyectos</p>
+    <h2 class="section-title reveal reveal-delay-1">Código con<br />propósito.</h2>
+    <div class="projects-grid">
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-top">
+          <div class="project-icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></div>
+          <div class="project-links">
+            <a href="https://github.com/pedroantolinezz-dev/analizador-logs-seguridad" target="_blank" rel="noopener" class="project-link" title="Ver en GitHub">
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <div class="project-name">Analizador de Logs de Seguridad</div>
+        <p class="project-desc">
+          Herramienta en Python para detección de amenazas y patrones de ataque en logs. 
+          Analiza archivos de registro del sistema, identifica actividad sospechosa y genera 
+          reportes de incidentes estructurados para facilitar la respuesta ante amenazas.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Log Analysis</span>
+          <span class="tag">Threat Detection</span>
+          <span class="tag">Security</span>
+        </div>
+        <a href="https://github.com/pedroantolinezz-dev/analizador-logs-seguridad" target="_blank" rel="noopener" class="btn-project">
+          Ver en GitHub <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       LANGUAGES
+  ========================================== -->
+  <section id="languages">
+    <p class="section-label reveal">// 06 — Idiomas</p>
+    <h2 class="section-title reveal reveal-delay-1">Comunicación<br />sin fronteras.</h2>
+    <div class="lang-grid">
+      <div class="lang-card reveal reveal-delay-1">
+        <div class="lang-flag" aria-hidden="true">🇨🇴</div>
+        <div class="lang-info">
+          <div class="lang-name">Español</div>
+          <div class="lang-level">NATIVO</div>
+          <div class="lang-dots">
+            <div class="dot filled"></div>
+            <div class="dot filled"></div>
+            <div class="dot filled"></div>
+            <div class="dot filled"></div>
+            <div class="dot filled"></div>
+          </div>
+        </div>
+      </div>
+      <div class="lang-card reveal reveal-delay-2">
+        <div class="lang-flag" aria-hidden="true">🇺🇸</div>
+        <div class="lang-info">
+          <div class="lang-name">Inglés</div>
+          <div class="lang-level">TÉCNICO / AVANZADO</div>
+          <div class="lang-dots">
+            <div class="dot filled"></div>
+            <div class="dot filled"></div>
+            <div class="dot filled"></div>
+            <div class="dot filled"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       CONTACT
+  ========================================== -->
+  <section id="contact">
+    <p class="section-label reveal">// 07 — Contacto</p>
+    <h2 class="section-title reveal reveal-delay-1">Hablemos de<br />seguridad.</h2>
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <p class="reveal reveal-delay-2">
+          Estoy disponible para oportunidades en equipos de ciberseguridad, roles SOC y proyectos 
+          de análisis de seguridad. Si buscas un profesional comprometido, con formación técnica 
+          sólida y hambre de aprender, contáctame.
+        </p>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/pedro-antolinez-itprofessional/" target="_blank" rel="noopener" class="contact-link reveal reveal-delay-3">
+            <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+            <div>
+              <strong>LinkedIn</strong>
+              pedro-antolinez-itprofessional
+            </div>
+          </a>
+          <a href="https://github.com/pedroantolinezz-dev" target="_blank" rel="noopener" class="contact-link reveal reveal-delay-4">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            <div>
+              <strong>GitHub</strong>
+              pedroantolinezz-dev
+            </div>
+          </a>
+          <a href="https://wa.me/573026193661" target="_blank" rel="noopener" class="contact-link reveal reveal-delay-5">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+            <div>
+              <strong>WhatsApp</strong>
+              +57 302 619 3661
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-cta reveal reveal-delay-2">
+        <div class="cta-box">
+          <div class="cta-title">¿Trabajamos juntos?</div>
+          <p class="cta-text">
+            Listo para contribuir a equipos de seguridad y ayudar a fortalecer 
+            infraestructuras digitales. Abierto a roles remotos y presenciales.
+          </p>
+          <a href="https://wa.me/573026193661" target="_blank" rel="noopener" class="btn-primary" style="justify-content:center;width:100%;max-width:260px;margin:0 auto;">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Enviar mensaje
+          </a>
+          <div class="social-row">
+            <a href="https://www.linkedin.com/in/pedro-antolinez-itprofessional/" target="_blank" rel="noopener" class="social-icon" title="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+            <a href="https://github.com/pedroantolinezz-dev" target="_blank" rel="noopener" class="social-icon" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+            <a href="https://wa.me/573026193661" target="_blank" rel="noopener" class="social-icon" title="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FOOTER
+  ========================================== -->
+  <footer>
+    <div class="footer-logo">PEDRO<span>_SEC</span></div>
+    <p>© 2025 Pedro Antolinez. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- WhatsApp float -->
+  <a href="https://wa.me/573026193661" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+  </a>
+
+  <!-- ==========================================
+       JAVASCRIPT
+  ========================================== -->
+  <script>
+    /* ---- Typewriter ---- */
+    const words = ['Cybersecurity Analyst.', 'SOC Tier 1.', 'Software Engineer.', 'Pentester.'];
+    let wi = 0, ci = 0, isDeleting = false;
+    const twEl = document.getElementById('typewriter');
+
+    function typeLoop() {
+      const full = words[wi];
+      twEl.textContent = isDeleting ? full.slice(0, ci - 1) : full.slice(0, ci + 1);
+      isDeleting ? ci-- : ci++;
+
+      let speed = isDeleting ? 55 : 100;
+      if (!isDeleting && ci === full.length)  { speed = 2000; isDeleting = true; }
+      else if (isDeleting && ci === 0)         { isDeleting = false; wi = (wi + 1) % words.length; speed = 450; }
+      setTimeout(typeLoop, speed);
+    }
+    window.addEventListener('DOMContentLoaded', () => setTimeout(typeLoop, 1400));
+
+    /* ---- Mobile nav ---- */
+    const toggle = document.getElementById('menu-toggle');
+    const menu   = document.getElementById('nav-menu');
+    toggle.addEventListener('click', () => menu.classList.toggle('open'));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+    /* ---- Scroll reveal ---- */
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => io.observe(el));
+
+    /* ---- Skill bar animation ---- */
+    const bars = document.querySelectorAll('.skill-bar');
+    const barIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.width = e.target.dataset.width + '%';
+          barIO.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    bars.forEach(b => barIO.observe(b));
+
+    /* ---- Sticky nav background ---- */
+    window.addEventListener('scroll', () => {
+      document.querySelector('header').style.background =
+        window.scrollY > 40 ? 'rgba(5,10,15,0.97)' : 'rgba(5,10,15,0.88)';
+    });
+
+    /* ---- Active nav link highlight ---- */
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY + 100;
+      sections.forEach(sec => {
+        if (scrollY >= sec.offsetTop && scrollY < sec.offsetTop + sec.offsetHeight) {
+          navLinks.forEach(a => a.style.color = '');
+          const active = document.querySelector(`nav a[href="#${sec.id}"]`);
+          if (active) active.style.color = 'var(--accent)';
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
